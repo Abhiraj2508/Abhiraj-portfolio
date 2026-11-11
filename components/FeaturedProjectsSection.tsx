@@ -109,7 +109,7 @@ export default function FeaturedProjectsSection({
           </ul>
 
           <a
-            href="https://github.com/Abhiraj2508"
+            href="https://github.com/Vanshu006/Foodie"
             target="_blank"
             rel="noopener noreferrer"
             className="project-repo-link"
