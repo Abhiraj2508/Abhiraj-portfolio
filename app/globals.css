@@ -944,11 +944,11 @@ h1, h2, h3 {
    ========================================================= */
 .projects-grid {
   display: grid;
-  grid-template-columns: 1.18fr 0.82fr;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 28px;
   align-items: stretch;
 }
-@media (max-width: 960px) {
+@media (max-width: 640px) {
   .projects-grid {
     grid-template-columns: 1fr;
   }
@@ -1017,6 +1017,7 @@ h1, h2, h3 {
 .project-banner-img {
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
 }
@@ -1053,13 +1054,18 @@ h1, h2, h3 {
 
 .project-feature-badges {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   margin-bottom: 24px;
 }
-@media (max-width: 640px) {
+@media (min-width: 1480px) {
   .project-feature-badges {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 440px) {
+  .project-feature-badges {
+    grid-template-columns: 1fr;
   }
 }
 .f-badge {
@@ -1067,11 +1073,11 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 6px;
+  padding: 8px 8px;
   background: rgba(168, 85, 247, 0.08);
   border: 1px solid rgba(192, 132, 252, 0.18);
   border-radius: 8px;
-  font-size: 10px;
+  font-size: 10.5px;
   color: var(--text);
   font-weight: 500;
   white-space: nowrap;
@@ -1092,10 +1098,11 @@ h1, h2, h3 {
 
 .project-title {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 12px;
+  line-height: 1.35;
 }
 
 .project-desc {
@@ -1156,6 +1163,64 @@ h1, h2, h3 {
 .project-repo-link:hover {
   color: #ffffff;
   gap: 12px;
+}
+
+.project-actions-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: auto;
+}
+.project-actions-row .project-repo-link {
+  margin-top: 0;
+}
+.project-repo-link.docker-link {
+  color: #38bdf8;
+}
+.project-repo-link.docker-link:hover {
+  color: #ffffff;
+}
+
+/* Pipeline workflow flow-strip inside card */
+.card-pipeline-flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 12px 14px;
+  background: rgba(168, 85, 247, 0.05);
+  border: 1px solid rgba(192, 132, 252, 0.16);
+  border-radius: 8px;
+  margin-bottom: 22px;
+  overflow-x: auto;
+}
+.flow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.flow-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--purple-light);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.flow-label {
+  font-size: 10.5px;
+  color: var(--text);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.flow-arrow {
+  color: var(--purple-light);
+  opacity: 0.55;
+  font-size: 11px;
+  flex-shrink: 0;
 }
 
 /* Right "More systems are in the making" card */

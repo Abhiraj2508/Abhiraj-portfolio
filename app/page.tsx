@@ -3,240 +3,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import {
-  ArrowUpRight,
-  Boxes,
-  CheckCircle2,
-  Cloud,
-  Code2,
-  Container,
-  Download,
-  ExternalLink,
-  GitBranch,
-  Mail,
-  Server,
-  ShieldCheck,
-  Terminal as TerminalIcon,
-  Workflow,
-  Zap,
-} from "lucide-react";
 
-// --- DATA STRUCTURES ---
+// Modular Section Components
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import TerminalSection from "@/components/TerminalSection";
+import TechStackSection from "@/components/TechStackSection";
+import ProfileSection from "@/components/ProfileSection";
+import OrbitSection from "@/components/OrbitSection";
+import FeaturedProjectsSection from "@/components/FeaturedProjectsSection";
+import PipelineSimulatorSection from "@/components/PipelineSimulatorSection";
+import NetworkMapSection from "@/components/NetworkMapSection";
+import ContactSection from "@/components/ContactSection";
+import FooterSection from "@/components/FooterSection";
+import Modals from "@/components/Modals";
+import ToastContainer from "@/components/ToastContainer";
 
-interface TechDetail {
-  use: string;
-  fit: string;
-  related: string;
-  projects: string;
-}
-
-const TECH_INFO: Record<string, TechDetail> = {
-  AWS: {
-    use: "Provisions and hosts cloud infrastructure — EC2 compute, S3 storage, IAM access control, VPC networking.",
-    fit: "Foundation layer — cloud instances, managed clusters and storage buckets.",
-    related: "Terraform, EC2, S3, IAM, VPC, EKS",
-    projects: "AWS Infrastructure Automation, Kubernetes Deployment",
-  },
-  Linux: {
-    use: "Operating system for every server, container host and pipeline runner.",
-    fit: "Underneath the entire stack — automation, shell scripting, networking, and system administration.",
-    related: "Bash, Networking, Systemd, Docker",
-    projects: "All live systems",
-  },
-  Git: {
-    use: "Version control for every codebase and infrastructure-as-code repository.",
-    fit: "The initial trigger point of every CI/CD pipeline.",
-    related: "GitHub, Jenkins, Webhooks, CI/CD",
-    projects: "Automated CI/CD Pipeline, AWS Infrastructure",
-  },
-  Docker: {
-    use: "Packages applications and dependencies into isolated, reproducible, lightweight container images.",
-    fit: "Sits between build and deploy — the standard deployment artifact for modern clusters.",
-    related: "Kubernetes, Jenkins, Docker Hub, Linux",
-    projects: "All three live systems",
-  },
-  Kubernetes: {
-    use: "Orchestrates containerized applications at scale — deployments, services, ingress, self-healing, rolling updates.",
-    fit: "Runtime orchestration platform receiving images built and tested by CI/CD.",
-    related: "Docker, Helm, Prometheus, Grafana, AWS EKS",
-    projects: "Kubernetes Application Deployment, DevSecOps Pipeline",
-  },
-  Jenkins: {
-    use: "Automates build, test, vulnerability scanning and deployment stages of the pipeline.",
-    fit: "The automation workhorse that turns a git commit into a production-ready deployment.",
-    related: "GitHub, Docker, SonarQube, Trivy, Kubernetes",
-    projects: "Automated CI/CD Pipeline (DevSecOps)",
-  },
-  Terraform: {
-    use: "Defines cloud resources as declarative, version-controlled, reusable code.",
-    fit: "Provisions cloud VPCs, compute instances and IAM roles before application containers run.",
-    related: "AWS, EC2, VPC, IAM, S3",
-    projects: "AWS Infrastructure Automation",
-  },
-  Prometheus: {
-    use: "Scrapes and stores multi-dimensional time-series metrics from nodes, pods and apps.",
-    fit: "Continuously watches cluster and service health post-deployment.",
-    related: "Grafana, Kubernetes, Alertmanager",
-    projects: "Kubernetes Application Deployment",
-  },
-  Grafana: {
-    use: "Visualizes time-series telemetry into responsive, observable real-time dashboards.",
-    fit: "The observability cockpit providing visibility into system metrics and incidents.",
-    related: "Prometheus, Kubernetes, Linux",
-    projects: "Kubernetes Application Deployment",
-  },
-  Nginx: {
-    use: "High-performance reverse proxy, ingress controller and SSL termination gateway.",
-    fit: "Front door of incoming web traffic, routing requests to containers.",
-    related: "DNS, TCP/IP, Ingress, SSL/TLS",
-    projects: "Network-facing deployments",
-  },
-};
-
-const ORBITS = [
-  { r: 92, items: ["AWS", "Linux", "Git"] },
-  { r: 148, items: ["Docker", "Kubernetes", "Jenkins"] },
-  { r: 204, items: ["Terraform", "Prometheus", "Grafana", "Nginx"] },
-];
-
-interface SystemProject {
-  id: string;
-  name: string;
-  steps: string[];
-  stack: string[];
-  bullets: string[];
-  result: string;
-  cluster: "cicd" | "cloud" | "containers";
-}
-
-const SYSTEMS: SystemProject[] = [
-  {
-    id: "SYS-01",
-    name: "Automated CI/CD Pipeline",
-    steps: [
-      "GitHub",
-      "Jenkins",
-      "Maven/Node Build",
-      "Docker Image",
-      "Container Deploy",
-      "Smoke Testing",
-      "Docker Hub Push",
-    ],
-    stack: ["Docker", "Jenkins", "GitHub", "CI/CD"],
-    bullets: [
-      "Automated source code checkout triggered by GitHub commits and webhooks.",
-      "Automated application build, verification and testing inside isolated runners.",
-      "Docker container image packaging, optimization and local deployment.",
-      "Pipeline smoke testing and artifact publishing to Docker Hub.",
-    ],
-    result:
-      "Result: Automated end-to-end software delivery, eliminating manual intervention and ensuring consistent deployments.",
-    cluster: "cicd",
-  },
-];
-
-const DEPLOY_STEPS = [
-  "Git push detected",
-  "Pipeline triggered",
-  "Source checkout",
-  "Dependency installation",
-  "Docker image building",
-  "Image pushed to Docker Hub",
-  "Deployment started on Kubernetes",
-  "Deployment successful",
-];
-
-const NET_NODES = ["CLIENT", "DNS", "NGINX", "APPLICATION", "CONTAINER", "DATABASE"];
-
-const NET_CONN_INFO = [
-  { proto: "DNS", port: "53", request: "Resolve domain abhiraj.dev", response: "A record -> 76.76.21.21", status: "200 OK" },
-  { proto: "HTTPS", port: "443", request: "GET /", response: "302 -> /app (TLS 1.3)", status: "302 Found" },
-  { proto: "HTTP", port: "8080", request: "Proxy pass -> upstream", response: "App response", status: "200 OK" },
-  { proto: "gRPC", port: "50051", request: "Internal cluster RPC", response: "Container response ack", status: "200 OK" },
-  { proto: "TCP", port: "5432", request: "SELECT * FROM health_check", response: "Cluster healthy (1 row)", status: "200 OK" },
-];
-
-const ENDPOINTS = [
-  { name: "GitHub", endpoint: "github.com/Abhiraj2508", url: "https://github.com/Abhiraj2508" },
-  { name: "LinkedIn", endpoint: "linkedin.com/in/abhiraj-pratap-951753241/", url: "https://linkedin.com/in/abhiraj-pratap-951753241/" },
-  { name: "Email", endpoint: "abhirajpratap250802@gmail.com", url: "https://mail.google.com/mail/?view=cm&fs=1&to=abhirajpratap250802@gmail.com" },
-  { name: "Resume", endpoint: "resume.pdf", isResume: true },
-];
-
-const SKILLS_LIST = [
-  {
-    name: "Docker",
-    category: "CONTAINERIZATION",
-    icon: Container,
-    level: "Learning & Project Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Building reproducible container images, multi-stage Dockerfiles, volume management, container networking, and local cluster testing.",
-  },
-  {
-    name: "Jenkins",
-    category: "CI/CD AUTOMATION",
-    icon: Workflow,
-    level: "Project Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Automated CI/CD pipelines, build triggers, automated testing, SonarQube code quality gates, and container deployments.",
-  },
-  {
-    name: "Kubernetes",
-    category: "ORCHESTRATION",
-    icon: Boxes,
-    level: "Learning",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Configuring multi-container Pods, Deployments, ClusterIP/NodePort Services, Ingress controllers, and Helm charts.",
-  },
-  {
-    name: "AWS",
-    category: "CLOUD PLATFORM",
-    icon: Cloud,
-    level: "Learning",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Provisioning cloud compute (EC2), storage (S3), identity management (IAM), VPC networking, and security groups.",
-  },
-  {
-    name: "Linux",
-    category: "OPERATING SYSTEM",
-    icon: TerminalIcon,
-    level: "Learning & Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Core operating system foundation, Bash shell scripting, systemd service management, SSH, and networking fundamentals.",
-  },
-  {
-    name: "Git & GitHub",
-    category: "VERSION CONTROL",
-    icon: GitBranch,
-    level: "Project Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Branch management, pull requests, semantic versioning, and GitHub webhook integrations with CI/CD runners.",
-  },
-  {
-    name: "CI/CD",
-    category: "AUTOMATION",
-    icon: Server,
-    level: "Project Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Automating source checkout, dependency installation, security scanning, container packaging, and production rollouts.",
-  },
-  {
-    name: "JavaScript",
-    category: "PROGRAMMING",
-    icon: Code2,
-    level: "Learning & Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Application logic, script automation, Node.js tooling, and interactive frontend & backend integrations.",
-  },
-];
+// Data
+import { DEPLOY_STEPS } from "@/data/portfolioData";
 
 export default function Home() {
   // Navigation & UI state
@@ -250,8 +34,6 @@ export default function Home() {
 
   // Tech stack 2nd section state
   const [selectedSkillName, setSelectedSkillName] = useState<string>("Docker");
-  const activeSkill = SKILLS_LIST.find((s) => s.name === selectedSkillName) || SKILLS_LIST[0];
-  const ActiveSkillIcon = activeSkill.icon;
 
   // Deployment simulator state
   const [deploying, setDeploying] = useState(false);
@@ -1015,788 +797,88 @@ Wake up, recruiter. The infrastructure has you.`,
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
-
-      {/* TOP NAVIGATION */}
-      <nav id="nav">
-        <div className="logo">
-          <img
-            src="/avatar.jpg"
-            alt="Abhiraj Pratap Singh"
-            className="logo-avatar"
-          />
-          <span className="dot" /> ABHIRAJ.OS
-        </div>
-        <button id="nav-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          MENU
-        </button>
-        <ul id="nav-list" className={mobileMenuOpen ? "open" : ""}>
-          <li>
-            <a
-              href="#hero"
-              className={`nlink ${activeSection === "hero" ? "active" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              System
-            </a>
-          </li>
-          <li>
-            <a
-              href="#terminal-section"
-              className={`nlink nlink-term ${activeSection === "terminal-section" ? "active" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Terminal
-            </a>
-          </li>
-          <li>
-            <a
-              href="#tech-stack"
-              className={`nlink ${activeSection === "tech-stack" ? "active" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Stack
-            </a>
-          </li>
-          <li>
-            <a
-              href="#systems"
-              className={`nlink ${activeSection === "systems" ? "active" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Projects
-            </a>
-          </li>
-          <li>
-            <a
-              href="#pipeline"
-              className={`nlink ${activeSection === "pipeline" ? "active" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Pipeline
-            </a>
-          </li>
-          <li>
-            <a
-              href="#contact"
-              className={`nlink ${activeSection === "contact" ? "active" : ""}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Contact
-            </a>
-          </li>
-        </ul>
-        <div className="status">● SYSTEM ONLINE</div>
-      </nav>
-
-      {/* FLOATING CONSOLE LAUNCHER */}
-      <button
-        id="console-launcher"
-        className="show"
-        onClick={openConsole}
-        data-node-label="CONSOLE"
-      >
-        <span className="blip" /> Open Console <span className="kbd">`</span>
-      </button>
+      {/* TOP NAVIGATION & FLOATING CONSOLE LAUNCHER */}
+      <Navbar
+        activeSection={activeSection}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        openConsole={openConsole}
+      />
 
       {/* MAIN APPLICATION CONTAINER */}
       <div id="app">
-        {/* ================= HERO / 3D WORLD ================= */}
-        <section id="hero">
-          <div id="hero-overlay">
-            <div className="eyebrow">DevOps Engineer · Cloud · Automation · Infrastructure</div>
-            <h1 id="hero-name">
-              <span>ABHIRAJ </span>
-              <span className="last">PRATAP SINGH</span>
-            </h1>
-            <div id="hero-role">DevOps Engineer</div>
-            <p id="hero-tag">
-              Engineering automated, scalable and observable infrastructure — across AWS, containers, CI/CD and Linux.
-            </p>
-            <div id="hero-cta">
-              <a href="#terminal-section" className="btn primary">
-                [ Open Terminal ]
-              </a>
-              <button className="btn" onClick={() => setActiveModal("resume")}>
-                [ Resume ]
-              </button>
-            </div>
-          </div>
+        {/* 00 · Hero / 3D World */}
+        <HeroSection
+          heroCanvasRef={heroCanvasRef}
+          setActiveModal={setActiveModal}
+        />
 
-          <div id="hero-canvas-wrap">
-            <canvas id="hero-canvas" ref={heroCanvasRef} />
-            <div className="node-tooltip" id="node-tooltip" />
-          </div>
+        {/* 01 · System Shell / Terminal */}
+        <TerminalSection
+          isConsoleFlashing={isConsoleFlashing}
+          termScrollRef={termScrollRef}
+          termInputRef={termInputRef}
+          termHistory={termHistory}
+          termCwd={termCwd}
+          termInput={termInput}
+          setTermInput={setTermInput}
+          cmdHistory={cmdHistory}
+          cmdHistoryIdx={cmdHistoryIdx}
+          setCmdHistoryIdx={setCmdHistoryIdx}
+          handleTermSubmit={handleTermSubmit}
+        />
 
-          <div id="hero-hint">
-            Click a node to travel there · or drive it from the <b>Terminal</b> below
-          </div>
-          <div id="hero-scroll">
-            Scroll<div className="line" />
-          </div>
-        </section>
+        {/* 02 · Technology Ecosystem */}
+        <TechStackSection
+          selectedSkillName={selectedSkillName}
+          setSelectedSkillName={setSelectedSkillName}
+          onFocusCluster={(cluster) => sceneControllerRef.current?.focusCluster(cluster, true)}
+        />
 
-        {/* ================= TERMINAL SECTION ================= */}
-        <section id="terminal-section" className="section">
-          <div className="section-head">
-            <div className="eyebrow">01 · System Shell</div>
-            <h2 className="section-title">The whole site, as a shell</h2>
-            <p className="section-sub">
-              Type <b style={{ color: "var(--purple-light)" }}>help</b> to see every command. Try{" "}
-              <b style={{ color: "var(--purple-light)" }}>neofetch</b>,{" "}
-              <b style={{ color: "var(--purple-light)" }}>ls</b>, or{" "}
-              <b style={{ color: "var(--purple-light)" }}>kubectl get pods</b> — commands here also drive the 3D world up
-              top.
-            </p>
-          </div>
-          <div id="term-window" className={isConsoleFlashing ? "flash" : ""}>
-            <div id="term-titlebar">
-              <span className="dot r" />
-              <span className="dot y" />
-              <span className="dot g" />
-              <span className="path">abhiraj@devops: ~</span>
-            </div>
-            <div id="terminal" ref={termScrollRef} onClick={() => termInputRef.current?.focus()}>
-              {termHistory.map((item, idx) => (
-                <div key={idx} className={`tline ${item.cls || ""}`}>
-                  {item.text}
-                </div>
-              ))}
-            </div>
-            <form id="term-input-row" onSubmit={handleTermSubmit}>
-              <span id="term-prompt-lbl">
-                abhiraj@devops:<span style={{ color: "var(--term-dir)" }}>{termCwd}</span>$
-              </span>
-              <input
-                id="term-input"
-                ref={termInputRef}
-                value={termInput}
-                onChange={(e) => setTermInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "ArrowUp") {
-                    if (cmdHistoryIdx > 0) {
-                      const nextIdx = cmdHistoryIdx - 1;
-                      setCmdHistoryIdx(nextIdx);
-                      setTermInput(cmdHistory[nextIdx] || "");
-                    }
-                    e.preventDefault();
-                  } else if (e.key === "ArrowDown") {
-                    if (cmdHistoryIdx < cmdHistory.length - 1) {
-                      const nextIdx = cmdHistoryIdx + 1;
-                      setCmdHistoryIdx(nextIdx);
-                      setTermInput(cmdHistory[nextIdx] || "");
-                    } else {
-                      setCmdHistoryIdx(cmdHistory.length);
-                      setTermInput("");
-                    }
-                    e.preventDefault();
-                  }
-                }}
-                autoComplete="off"
-                autoCapitalize="off"
-                spellCheck={false}
-              />
-            </form>
-            <div className="term-hint">
-              try: <b>help</b> · <b>neofetch</b> · <b>ls</b> · <b>cat resume.pdf</b> · <b>man devops</b> ·{" "}
-              <b>sudo hire abhiraj</b>
-            </div>
-          </div>
-        </section>
+        {/* 03 · Engineer Profile */}
+        <ProfileSection />
 
-        {/* ================= SECTION 02: TECH STACK ================= */}
-        <section id="tech-stack" className="section">
-          <div className="section-head">
-            <div className="eyebrow">02 / TECHNOLOGY ECOSYSTEM</div>
-            <h2 className="section-title">My Tech Stack.</h2>
-            <p className="section-sub">Tools and technologies I&apos;m learning and working with.</p>
-          </div>
+        {/* 04 · Orbital Architecture */}
+        <OrbitSection
+          selectedTech={selectedTech}
+          setSelectedTech={setSelectedTech}
+        />
 
-          <div className="skills-grid-wrap">
-            <div className="skills-cards-grid">
-              {SKILLS_LIST.map((skill) => {
-                const Icon = skill.icon;
-                const isSelected = selectedSkillName === skill.name;
-                return (
-                  <div
-                    key={skill.name}
-                    className={`skill-card ${isSelected ? "active" : ""}`}
-                    onClick={() => {
-                      setSelectedSkillName(skill.name);
-                      if (skill.name === "Docker" || skill.name === "Kubernetes") {
-                        sceneControllerRef.current?.focusCluster("containers", true);
-                      } else if (skill.name === "AWS") {
-                        sceneControllerRef.current?.focusCluster("cloud", true);
-                      } else if (
-                        skill.name === "Jenkins" ||
-                        skill.name === "Git & GitHub" ||
-                        skill.name === "CI/CD"
-                      ) {
-                        sceneControllerRef.current?.focusCluster("cicd", true);
-                      } else if (skill.name === "Linux") {
-                        sceneControllerRef.current?.focusCluster("network", true);
-                      }
-                    }}
-                    data-node-label={skill.name}
-                  >
-                    <Icon className="skill-icon" />
-                    <div>
-                      <div className="skill-name">{skill.name}</div>
-                      <div className="skill-cat">{skill.category}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+        {/* 05 · Featured Projects */}
+        <FeaturedProjectsSection
+          onFocusCluster={(cluster) => sceneControllerRef.current?.focusCluster(cluster, true)}
+        />
 
-            <div className="skill-detail-panel">
-              <div className="skill-detail-eyebrow">SELECTED TECHNOLOGY</div>
-              <div className="skill-detail-icon-wrap">
-                <ActiveSkillIcon size={30} />
-              </div>
-              <div className="skill-detail-title">{activeSkill.name}</div>
-              <div className="skill-detail-level">{activeSkill.level}</div>
-              <div className="skill-detail-roadmap">
-                <CheckCircle2 size={16} style={{ color: "var(--purple-light)" }} />
-                <span>{activeSkill.roadmap}</span>
-              </div>
-              <p className="skill-detail-desc">{activeSkill.description}</p>
-            </div>
-          </div>
-        </section>
+        {/* 06 · Deployment Control */}
+        <PipelineSimulatorSection
+          deploying={deploying}
+          deployStepIndex={deployStepIndex}
+          triggerDeploy={triggerDeploy}
+        />
 
-        {/* ================= PROFILE SECTION ================= */}
-        <section id="profile" className="section">
-          <div className="section-head">
-            <div className="eyebrow">03 · Engineer Profile</div>
-            <h2 className="section-title">Read from disk: abhiraj.json</h2>
-          </div>
-          <div className="profile-grid">
-            <div className="profile-intro">
-              <p>
-                Abhiraj Pratap Singh is an <span className="accent">aspiring DevOps Engineer</span> focused on building automated, reliable and scalable deployment workflows.
-              </p>
-              <p>
-                With a foundation in Computer Science and Engineering, he is passionate about <span className="accent">Linux administration, containerization, CI/CD automation and cloud technologies.</span>
-              </p>
-              <p>
-                His hands-on project experience includes building a <span className="accent">Docker and Jenkins-based CI/CD pipeline, automating application builds, container deployment, smoke testing and Docker Hub image publishing.</span>
-              </p>
-              <p>
-                Currently strengthening his knowledge of Kubernetes, AWS, infrastructure automation and monitoring to build production-ready DevOps solutions.
-              </p>
-              <div className="focus-tags">
-                <span>CLOUD & DEVOPS</span>
-                <span>CI/CD AUTOMATION</span>
-                <span>DOCKER CONTAINERIZATION</span>
-                <span>JENKINS PIPELINES</span>
-                <span>LINUX ADMINISTRATION</span>
-                <span>GIT & GITHUB</span>
-                <span>KUBERNETES</span>
-                <span>AWS FUNDAMENTALS</span>
-              </div>
-            </div>
-            <div className="data-card">
-              <div className="data-row">
-                <span className="k">name</span>
-                <span className="v">Abhiraj Pratap Singh</span>
-              </div>
-              <div className="data-row">
-                <span className="k">role</span>
-                <span className="v">Aspiring DevOps Engineer</span>
-              </div>
+        {/* 07 · Network Map */}
+        <NetworkMapSection
+          netInfo={netInfo}
+          setNetInfo={setNetInfo}
+        />
 
-              <div className="data-row">
-                <span className="k">focus</span>
-                <span className="v">DevOps · Cloud · Automation · CI/CD</span>
-              </div>
-              <div className="data-row">
-                <span className="k">primary_stack</span>
-                <span className="v">Docker, Jenkins, Kubernetes, AWS, Linux, Git</span>
-              </div>
-              <div className="data-row">
-                <span className="k">version_control</span>
-                <span className="v">Git, GitHub</span>
-              </div>
-              <div className="data-row">
-                <span className="k">status</span>
-                <span className="v" style={{ color: "var(--green)" }}>
-                  ● Open to Opportunities
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* 08 · Contact / Establish Connection */}
+        <ContactSection
+          setActiveModal={setActiveModal}
+        />
 
-        {/* ================= STACK / ORBITAL SYSTEM ================= */}
-        <section id="stack" className="section">
-          <div className="section-head">
-            <div className="eyebrow">04 · Orbital Architecture</div>
-            <h2 className="section-title">Orbit around DevOps Engineering</h2>
-            <p className="section-sub">
-              Every tool orbits the same core discipline. Click one to see what it&apos;s used for, where it sits in the
-              pipeline, and which live systems depend on it.
-            </p>
-          </div>
-          <div id="stack-wrap">
-            <div id="orbit-canvas">
-              <svg viewBox="0 0 440 440">
-                {ORBITS.map((o, idx) => (
-                  <circle
-                    key={idx}
-                    className="orbit-ring"
-                    cx={220}
-                    cy={220}
-                    r={o.r * 0.62}
-                  />
-                ))}
-                <circle className="orbit-core" cx={220} cy={220} r={30} />
-                <text
-                  x={220}
-                  y={218}
-                  textAnchor="middle"
-                  fill="var(--purple-light)"
-                  fontFamily="var(--font-mono)"
-                  fontSize={8}
-                  letterSpacing={1}
-                >
-                  DEVOPS
-                </text>
-                <text
-                  x={220}
-                  y={229}
-                  textAnchor="middle"
-                  fill="var(--purple-light)"
-                  fontFamily="var(--font-mono)"
-                  fontSize={8}
-                  letterSpacing={1}
-                >
-                  ENGINEERING
-                </text>
-
-                {ORBITS.map((o, oi) => {
-                  const radius = o.r * 0.62;
-                  return o.items.map((name, i) => {
-                    const angle = (i / o.items.length) * Math.PI * 2 + oi * 0.5;
-                    const x = 220 + radius * Math.cos(angle);
-                    const y = 220 + radius * Math.sin(angle);
-                    const isSelected = selectedTech === name;
-                    return (
-                      <g
-                        key={name}
-                        className={`orbit-node ${isSelected ? "active" : ""}`}
-                        transform={`translate(${x},${y})`}
-                        onClick={() => setSelectedTech(name)}
-                        data-node-label={name}
-                      >
-                        <circle r={22} />
-                        <text textAnchor="middle" dy={4}>
-                          {name.length > 9 ? name.slice(0, 8) + "…" : name}
-                        </text>
-                      </g>
-                    );
-                  });
-                })}
-              </svg>
-            </div>
-            <div id="stack-info">
-              {TECH_INFO[selectedTech] ? (
-                <div>
-                  <h3>{selectedTech}</h3>
-                  <div className="field">
-                    <div className="label">What I use it for</div>
-                    <div className="val">{TECH_INFO[selectedTech].use}</div>
-                  </div>
-                  <div className="field">
-                    <div className="label">Where it fits in the pipeline</div>
-                    <div className="val">{TECH_INFO[selectedTech].fit}</div>
-                  </div>
-                  <div className="field">
-                    <div className="label">Related technologies</div>
-                    <div className="val">{TECH_INFO[selectedTech].related}</div>
-                  </div>
-                  <div className="field">
-                    <div className="label">Live systems using it</div>
-                    <div className="val">{TECH_INFO[selectedTech].projects}</div>
-                  </div>
-                </div>
-              ) : (
-                <div className="empty">
-                  Select a technology from the orbit to inspect it — try{" "}
-                  <b style={{ color: "var(--purple-light)" }}>Kubernetes</b> or{" "}
-                  <b style={{ color: "var(--purple-light)" }}>Docker</b>.
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= FEATURED PROJECTS ================= */}
-        <section id="systems" className="section">
-          <div className="section-head">
-            <div className="eyebrow">05 · Featured Projects</div>
-            <h2 className="section-title">Featured Projects.</h2>
-            <p className="section-sub">
-              Production pipelines, automated infrastructure and active engineering work.
-            </p>
-          </div>
-
-          <div className="projects-grid">
-            {/* FEATURED PROJECT 01 */}
-            <div
-              className="project-feature-card"
-              onClick={() => sceneControllerRef.current?.focusCluster("cicd", true)}
-              data-node-label="CI/CD Pipeline"
-            >
-              <div className="project-card-header">
-                <span className="project-card-num">PROJECT / 01</span>
-                <span className="project-card-status">
-                  <span className="status-dot green" />
-                  COMPLETED
-                </span>
-              </div>
-
-              <div className="project-banner-wrap">
-                <img
-                  src="/ci-cd-project.png"
-                  alt="Automated CI/CD Pipeline preview"
-                  className="project-banner-img"
-                />
-              </div>
-
-              <div className="project-feature-badges">
-                <div className="f-badge">
-                  <Zap size={13} className="f-icon" />
-                  <span>Automated Build</span>
-                </div>
-                <div className="f-badge">
-                  <Boxes size={13} className="f-icon" />
-                  <span>Containerization</span>
-                </div>
-                <div className="f-badge">
-                  <Workflow size={13} className="f-icon" />
-                  <span>Continuous Deployment</span>
-                </div>
-                <div className="f-badge">
-                  <ShieldCheck size={13} className="f-icon" />
-                  <span>Reliable &amp; Scalable</span>
-                </div>
-              </div>
-
-              <div className="project-sub">BUILD • TEST • DEPLOY</div>
-              <h3 className="project-title">Automated CI/CD Pipeline</h3>
-              <p className="project-desc">
-                An automated pipeline using GitHub, Jenkins and Docker. It checks out source code, verifies the project,
-                builds Docker images, deploys containers and performs smoke testing.
-              </p>
-
-              <div className="project-tech-tags">
-                <span className="project-tech-tag">Docker</span>
-                <span className="project-tech-tag">Jenkins</span>
-                <span className="project-tech-tag">GitHub</span>
-                <span className="project-tech-tag">CI/CD</span>
-              </div>
-
-              <ul className="project-checklist">
-                <li>
-                  <CheckCircle2 size={16} className="check-icon" />
-                  <span>Automated source code checkout</span>
-                </li>
-                <li>
-                  <CheckCircle2 size={16} className="check-icon" />
-                  <span>Docker image build and deployment</span>
-                </li>
-                <li>
-                  <CheckCircle2 size={16} className="check-icon" />
-                  <span>Pipeline smoke testing</span>
-                </li>
-                <li>
-                  <CheckCircle2 size={16} className="check-icon" />
-                  <span>Docker Hub image push</span>
-                </li>
-              </ul>
-
-              <a
-                href="https://github.com/Abhiraj2508"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-repo-link"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Explore repository <ExternalLink size={15} />
-              </a>
-            </div>
-
-            {/* MORE SYSTEMS ARE IN THE MAKING */}
-            <div className="project-next-card">
-              <div className="next-project-icon-wrap">
-                <Code2 size={24} />
-              </div>
-              <div className="next-project-eyebrow">NEXT IN THE BUILD LOG</div>
-              <h3 className="next-project-title">More systems are in the making.</h3>
-              <p className="next-project-desc">
-                New projects around Kubernetes, Infrastructure as Code, cloud and monitoring will appear here as I build
-                and document them.
-              </p>
-              <div className="next-project-progress">
-                <span className="live-dot" />
-                <span>PROJECTS IN PROGRESS</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= PIPELINE / DEPLOY SIMULATOR ================= */}
-        <section id="pipeline" className="section">
-          <div className="section-head">
-            <div className="eyebrow">06 · Deployment Control</div>
-            <h2 className="section-title">Trigger a deployment</h2>
-            <p className="section-sub">
-              This simulates the exact pipeline shape used in his DevOps project — Jenkins, automated testing,
-              Docker, Kubernetes.
-            </p>
-          </div>
-          <div className="deploy-panel">
-            <div className="deploy-top">
-              <div style={{ fontSize: "12px", color: "var(--muted)" }}>
-                Pipeline: <span style={{ color: "var(--text)" }}>Foodie Application / CI-CD</span>
-              </div>
-              <button className="btn primary" onClick={triggerDeploy} disabled={deploying}>
-                {deploying ? "[ Deploying... ]" : deployStepIndex >= DEPLOY_STEPS.length ? "[ Redeploy ]" : "[ Deploy ]"}
-              </button>
-            </div>
-            <div id="deploy-steps">
-              {DEPLOY_STEPS.map((step, idx) => {
-                const isActive = deployStepIndex === idx;
-                const isDone = deployStepIndex > idx;
-                return (
-                  <div
-                    key={step}
-                    className={`dstep ${isActive ? "active" : ""} ${isDone ? "done" : ""}`}
-                  >
-                    <span className="dname">{step}</span>
-                    <span className="dstatus">
-                      {isActive ? "running" : isDone ? (idx === DEPLOY_STEPS.length - 1 ? "success" : "done") : "pending"}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= NETWORK MAP ================= */}
-        <section id="network" className="section">
-          <div className="section-head">
-            <div className="eyebrow">07 · Network Map</div>
-            <h2 className="section-title">Request lifecycle</h2>
-            <p className="section-sub">Click any connection to inspect protocol, port and response.</p>
-          </div>
-          <div className="netmap">
-            {NET_NODES.map((n, i) => (
-              <React.Fragment key={n}>
-                <div className="net-node">
-                  <div className="box">{n}</div>
-                </div>
-                {i < NET_NODES.length - 1 && (
-                  <div
-                    className="net-conn"
-                    onClick={() => {
-                      const info = NET_CONN_INFO[i];
-                      setNetInfo(
-                        `${info.proto} · port ${info.port} — request: ${info.request} → response: ${info.response} [${info.status}]`
-                      );
-                    }}
-                    data-node-label={NET_CONN_INFO[i].proto}
-                  >
-                    <span className="packet" style={{ animationDelay: `${i * 0.3}s` }} />
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-          <div id="net-info">
-            <b>{netInfo}</b>
-          </div>
-        </section>
-
-        {/* ================= CONTACT ================= */}
-        <section id="contact" className="section contact-section">
-          <div className="contact-container">
-            {/* LEFT COLUMN: HEADLINE & CTA */}
-            <div className="contact-left">
-              <div className="eyebrow contact-eyebrow">08 / ESTABLISH CONNECTION</div>
-              <h2 className="contact-main-title">
-                Let&apos;s build<br />
-                <span className="contact-title-accent">something reliable.</span>
-              </h2>
-              <p className="contact-main-desc">
-                I&apos;m open to entry-level opportunities, internships and learning-focused teams in DevOps and cloud engineering.
-              </p>
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=abhirajpratap250802@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-cta-btn"
-              >
-                <span>Start a conversation</span>
-                <ArrowUpRight size={18} />
-              </a>
-            </div>
-
-            {/* RIGHT COLUMN: 4 INTERACTIVE CONTACT CARDS */}
-            <div className="contact-cards-stack">
-              {/* EMAIL */}
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=abhirajpratap250802@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-card-item"
-                data-node-label="Email"
-              >
-                <div className="contact-card-icon">
-                  <Mail size={22} />
-                </div>
-                <div className="contact-card-info">
-                  <span className="contact-card-label">EMAIL</span>
-                  <span className="contact-card-value">abhirajpratap250802@gmail.com</span>
-                </div>
-                <ArrowUpRight size={18} className="contact-card-arrow" />
-              </a>
-
-              {/* GITHUB */}
-              <a
-                href="https://github.com/Abhiraj2508"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-card-item"
-                data-node-label="GitHub"
-              >
-                <div className="contact-card-icon">
-                  <GitBranch size={22} />
-                </div>
-                <div className="contact-card-info">
-                  <span className="contact-card-label">GITHUB</span>
-                  <span className="contact-card-value">github.com/Abhiraj2508</span>
-                </div>
-                <ArrowUpRight size={18} className="contact-card-arrow" />
-              </a>
-
-              {/* LINKEDIN */}
-              <a
-                href="https://linkedin.com/in/abhiraj-pratap-951753241/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-card-item"
-                data-node-label="LinkedIn"
-              >
-                <div className="contact-card-icon">
-                  <ExternalLink size={22} />
-                </div>
-                <div className="contact-card-info">
-                  <span className="contact-card-label">LINKEDIN</span>
-                  <span className="contact-card-value">Connect professionally</span>
-                </div>
-                <ArrowUpRight size={18} className="contact-card-arrow" />
-              </a>
-
-              {/* RESUME */}
-              <div
-                className="contact-card-item"
-                onClick={() => setActiveModal("resume")}
-                data-node-label="Resume"
-              >
-                <div className="contact-card-icon">
-                  <Download size={22} />
-                </div>
-                <div className="contact-card-info">
-                  <span className="contact-card-label">RESUME</span>
-                  <span className="contact-card-value">Download PDF</span>
-                </div>
-                <ArrowUpRight size={18} className="contact-card-arrow" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= FOOTER ================= */}
-        <footer id="footer">
-          <div className="quote">&ldquo;Automate the repeatable. Observe the system. Build for reliability.&rdquo;</div>
-          <div className="name">Abhiraj Pratap Singh — DevOps Engineer</div>
-          <div className="meta">ABHIRAJ.OS · build 2026.11 · system nominal</div>
-        </footer>
+        {/* Footer */}
+        <FooterSection />
       </div>
 
-      {/* ================= MODALS ================= */}
-      {/* System Project Modal */}
-      {activeModal && activeModal !== "resume" && (
-        <div className="modal-backdrop show" onClick={() => setActiveModal(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setActiveModal(null)}>
-              ×
-            </button>
-            {(() => {
-              const sys = SYSTEMS.find((s) => s.id === activeModal);
-              if (!sys) return null;
-              return (
-                <>
-                  <div className="eyebrow">{sys.id}</div>
-                  <h3>{sys.name}</h3>
-                  <div className="pipeline-mini">
-                    {sys.steps.map((st, i) => (
-                      <div key={i} className="step">
-                        {st}
-                      </div>
-                    ))}
-                  </div>
-                  <ul>
-                    {sys.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
-                    ))}
-                  </ul>
-                  <div className="system-result">{sys.result}</div>
-                  <div className="system-stack" style={{ marginTop: "18px" }}>
-                    {sys.stack.map((t) => (
-                      <span key={t}>{t}</span>
-                    ))}
-                  </div>
-                </>
-              );
-            })()}
-          </div>
-        </div>
-      )}
+      {/* Modals */}
+      <Modals
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+      />
 
-      {/* Resume Viewer Modal */}
-      {activeModal === "resume" && (
-        <div className="modal-backdrop show" id="resume-modal" onClick={() => setActiveModal(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="resume-top">
-              <h3>resume.pdf — Abhiraj Pratap Singh</h3>
-              <button className="modal-close" onClick={() => setActiveModal(null)}>
-                ×
-              </button>
-            </div>
-            <iframe src="/resume.pdf" title="Abhiraj Pratap Singh Resume" />
-            <div className="resume-actions">
-              <a className="btn primary" href="/resume.pdf" download="Abhiraj_Pratap_Singh_Resume.pdf">
-                [ Download Resume ]
-              </a>
-              <a className="btn" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                [ Open in New Tab ]
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TOASTS CONTAINER */}
-      <div id="toasts">
-        {toasts.map((t) => (
-          <div key={t.id} className="toast">
-            {t.message}
-          </div>
-        ))}
-      </div>
+      {/* Toasts */}
+      <ToastContainer toasts={toasts} />
     </main>
   );
 }
