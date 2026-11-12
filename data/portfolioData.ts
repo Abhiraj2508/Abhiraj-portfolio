@@ -1,9 +1,17 @@
 import {
+  Atom,
   Boxes,
   Cloud,
   Code2,
+  Coffee,
   Container,
+  FileCode,
+  Flame,
   GitBranch,
+  GitPullRequest,
+  Layers,
+  LineChart,
+  Palette,
   Server,
   Terminal as TerminalIcon,
   Workflow,
@@ -18,111 +26,151 @@ export interface TechDetail {
 }
 
 export const TECH_INFO: Record<string, TechDetail> = {
-  AWS: {
-    use: "Provisions and hosts cloud infrastructure — EC2 compute, S3 storage, IAM access control, VPC networking.",
-    fit: "Foundation layer — cloud instances, managed clusters and storage buckets.",
-    related: "Terraform, EC2, S3, IAM, VPC, EKS",
-    projects: "AWS Infrastructure Automation, Kubernetes Deployment",
-  },
   Linux: {
-    use: "Operating system for every server, container host and pipeline runner.",
+    use: "Core operating system for server administration, shell scripting, command line utilities, SSH, file permissions, and process management.",
     fit: "Underneath the entire stack — automation, shell scripting, networking, and system administration.",
-    related: "Bash, Networking, Systemd, Docker",
-    projects: "All live systems",
+    related: "Bash, Systemd, Networking, SSH, Docker",
+    projects: "All projects & deployments",
   },
   Git: {
-    use: "Version control for every codebase and infrastructure-as-code repository.",
-    fit: "The initial trigger point of every CI/CD pipeline.",
-    related: "GitHub, Jenkins, Webhooks, CI/CD",
-    projects: "Automated CI/CD Pipeline, AWS Infrastructure",
+    use: "Distributed version control for codebases and manifests, feature branching, merging, and release management.",
+    fit: "The initial trigger point of every CI/CD pipeline and collaborative workflow.",
+    related: "GitHub, Webhooks, CI/CD, Branching",
+    projects: "All projects",
+  },
+  GitHub: {
+    use: "Remote repository hosting, pull requests, branch protection, and automated webhook triggers.",
+    fit: "Central collaboration hub triggering automated Jenkins pipeline builds upon push events.",
+    related: "Git, Webhooks, CI/CD, Jenkins",
+    projects: "Automated CI/CD Pipeline for React Application, Kubernetes Platform",
   },
   Docker: {
     use: "Packages applications and dependencies into isolated, reproducible, lightweight container images.",
-    fit: "Sits between build and deploy — the standard deployment artifact for modern clusters.",
-    related: "Kubernetes, Jenkins, Docker Hub, Linux",
-    projects: "All three live systems",
-  },
-  Kubernetes: {
-    use: "Orchestrates containerized applications at scale — deployments, services, ingress, self-healing, rolling updates.",
-    fit: "Runtime orchestration platform receiving images built and tested by CI/CD.",
-    related: "Docker, Helm, Prometheus, Grafana, AWS EKS",
-    projects: "Kubernetes Application Deployment, DevSecOps Pipeline",
+    fit: "Sits between build and deploy — standard deployment artifact for modern environments and clusters.",
+    related: "Kubernetes, Jenkins, Docker Hub, Linux, Nginx",
+    projects: "React CI/CD Pipeline, Kubernetes Monitoring Platform, Automated CI/CD",
   },
   Jenkins: {
-    use: "Automates build, test, vulnerability scanning and deployment stages of the pipeline.",
-    fit: "The automation workhorse that turns a git commit into a production-ready deployment.",
-    related: "GitHub, Docker, SonarQube, Trivy, Kubernetes",
-    projects: "Automated CI/CD Pipeline (DevSecOps)",
+    use: "Automates source checkout, validation, Docker image building, container deployment, and smoke testing.",
+    fit: "The automation workhorse that turns a git push into a validated, running container deployment.",
+    related: "GitHub Webhooks, Docker, Docker Hub, CI/CD, Shell",
+    projects: "Automated CI/CD Pipeline for React Application, Automated CI/CD",
   },
-  Terraform: {
-    use: "Defines cloud resources as declarative, version-controlled, reusable code.",
-    fit: "Provisions cloud VPCs, compute instances and IAM roles before application containers run.",
-    related: "AWS, EC2, VPC, IAM, S3",
-    projects: "AWS Infrastructure Automation",
+  "CI/CD": {
+    use: "End-to-end continuous integration and deployment pipelines with automated build verification and health checks.",
+    fit: "Core methodology connecting developer code changes directly to automated deployments.",
+    related: "Jenkins, GitHub, Docker, Webhooks, Smoke Testing",
+    projects: "React CI/CD Pipeline, Automated CI/CD Pipeline",
+  },
+  AWS: {
+    use: "Foundational cloud services — EC2 compute instances, S3 storage buckets, IAM access control, and security groups.",
+    fit: "Cloud infrastructure layer for hosting compute nodes and object storage.",
+    related: "EC2, S3, IAM, VPC, Cloud Computing",
+    projects: "Cloud fundamentals & infrastructure practice",
+  },
+  Kubernetes: {
+    use: "Orchestrates containerized applications — Pods, Deployments, Services, ConfigMaps, Ingress, and self-healing.",
+    fit: "Runtime orchestration platform running multi-replica container workloads.",
+    related: "Minikube, Docker, Helm, Prometheus, Grafana",
+    projects: "Automated Kubernetes Deployment & Monitoring Platform",
+  },
+  Minikube: {
+    use: "Local multi-node Kubernetes cluster emulation for development, workload testing, and addon configuration.",
+    fit: "Local sandbox environment for practicing container orchestration, manifests, and Helm deployments.",
+    related: "Kubernetes, Docker, Helm, Ingress",
+    projects: "Automated Kubernetes Deployment & Monitoring Platform",
+  },
+  Helm: {
+    use: "The package manager for Kubernetes — templating manifests, parameterizing values, and managing releases.",
+    fit: "Simplifies deploying complex microservice architectures and monitoring stacks with versioned releases.",
+    related: "Kubernetes, Minikube, YAML, Prometheus Stack",
+    projects: "Automated Kubernetes Deployment & Monitoring Platform",
   },
   Prometheus: {
-    use: "Scrapes and stores multi-dimensional time-series metrics from nodes, pods and apps.",
-    fit: "Continuously watches cluster and service health post-deployment.",
-    related: "Grafana, Kubernetes, Alertmanager",
-    projects: "Kubernetes Application Deployment",
+    use: "Scrapes and stores multi-dimensional time-series metrics from nodes, pods, and application targets.",
+    fit: "Continuous telemetry collection providing real-time operational visibility into cluster health.",
+    related: "Grafana, Alertmanager, Kubernetes, PromQL",
+    projects: "Automated Kubernetes Deployment & Monitoring Platform",
   },
   Grafana: {
-    use: "Visualizes time-series telemetry into responsive, observable real-time dashboards.",
-    fit: "The observability cockpit providing visibility into system metrics and incidents.",
-    related: "Prometheus, Kubernetes, Linux",
-    projects: "Kubernetes Application Deployment",
+    use: "Visualizes time-series telemetry into responsive, observable real-time dashboards and metric graphs.",
+    fit: "Observability cockpit displaying CPU, memory, network bandwidth, and pod uptime.",
+    related: "Prometheus, Kubernetes, Alertmanager",
+    projects: "Automated Kubernetes Deployment & Monitoring Platform",
   },
-  Nginx: {
-    use: "High-performance reverse proxy, ingress controller and SSL termination gateway.",
-    fit: "Front door of incoming web traffic, routing requests to containers.",
-    related: "DNS, TCP/IP, Ingress, SSL/TLS",
-    projects: "Network-facing deployments",
+  Alertmanager: {
+    use: "Handles alerts generated by Prometheus, managing deduplication, grouping, and notification routing.",
+    fit: "Incident alerting layer detecting pod crash loops, restart spikes, and replica shortages.",
+    related: "Prometheus, Grafana, Kubernetes",
+    projects: "Automated Kubernetes Deployment & Monitoring Platform",
+  },
+  Java: {
+    use: "Object-oriented programming, data structures, algorithms, and backend application logic.",
+    fit: "Core academic and engineering foundation developed through B.Tech Computer Science coursework.",
+    related: "OOP, Data Structures, Algorithms, JVM",
+    projects: "Academic software engineering & foundational projects",
+  },
+  JavaScript: {
+    use: "Full-stack scripting, asynchronous programming, DOM manipulation, promises, and Node.js execution.",
+    fit: "Universal language powering interactive web applications and automation scripts.",
+    related: "React, Node.js, Vite, TypeScript, Web APIs",
+    projects: "React CI/CD Pipeline, Portfolio Web App",
+  },
+  React: {
+    use: "Component-based user interface architecture with stateful hooks, virtual DOM, and modular components.",
+    fit: "Frontend presentation layer for responsive web applications.",
+    related: "JavaScript, Vite, HTML, CSS, Next.js",
+    projects: "Foodies React Web App, ABHIRAJ.OS Portfolio",
+  },
+  Vite: {
+    use: "High-performance frontend build tool offering lightning-fast HMR and optimized production bundles.",
+    fit: "Build tool compiling React source code into minified distribution assets inside Docker containers.",
+    related: "React, JavaScript, Docker, Nginx",
+    projects: "Automated CI/CD Pipeline for React Application",
+  },
+  HTML: {
+    use: "Semantic document markup, accessibility standards, structured forms, and responsive elements.",
+    fit: "Structural foundation of all web interfaces.",
+    related: "CSS, JavaScript, React, Web Standards",
+    projects: "All web applications & user interfaces",
+  },
+  CSS: {
+    use: "Modern responsive styling, Flexbox, Grid, CSS custom properties, and fluid typography.",
+    fit: "Visual styling and animation layer creating modern, high-contrast user interfaces.",
+    related: "HTML, React, Responsive Design, CSS Grid",
+    projects: "All web applications & user interfaces",
   },
 };
 
 export const ORBITS = [
-  { r: 92, items: ["AWS", "Linux", "Git"] },
-  { r: 148, items: ["Docker", "Kubernetes", "Jenkins"] },
-  { r: 204, items: ["Terraform", "Prometheus", "Grafana", "Nginx"] },
+  { r: 92, items: ["Linux", "Git", "Docker"] },
+  { r: 148, items: ["Kubernetes", "Jenkins", "AWS"] },
+  { r: 204, items: ["CI/CD", "Prometheus", "Grafana", "React"] },
 ];
 
 export interface SystemProject {
   id: string;
   name: string;
+  overview: string;
+  problemSolved: string;
   steps: string[];
   stack: string[];
   bullets: string[];
   result: string;
-  cluster: "cicd" | "cloud" | "containers";
+  github: string;
+  dockerHub?: string;
+  screenshot: string;
+  cluster: "cicd" | "cloud" | "containers" | "monitor" | "network";
 }
 
 export const SYSTEMS: SystemProject[] = [
   {
     id: "SYS-01",
-    name: "Automated CI/CD Pipeline",
-    steps: [
-      "GitHub",
-      "Jenkins",
-      "Maven/Node Build",
-      "Docker Image",
-      "Container Deploy",
-      "Smoke Testing",
-      "Docker Hub Push",
-    ],
-    stack: ["Docker", "Jenkins", "GitHub", "CI/CD"],
-    bullets: [
-      "Automated source code checkout triggered by GitHub commits and webhooks.",
-      "Automated application build, verification and testing inside isolated runners.",
-      "Docker container image packaging, optimization and local deployment.",
-      "Pipeline smoke testing and artifact publishing to Docker Hub.",
-    ],
-    result:
-      "Result: Automated end-to-end software delivery, eliminating manual intervention and ensuring consistent deployments.",
-    cluster: "cicd",
-  },
-  {
-    id: "SYS-02",
     name: "Automated Kubernetes Deployment & Monitoring Platform",
+    overview:
+      "Engineered a resilient container orchestration and monitoring environment on Minikube. Deployed multi-replica workloads, packaged application manifests using Helm, and implemented full-stack cluster observability using Prometheus and Grafana with automated alert rules for pod restarts.",
+    problemSolved:
+      "Containerized workloads operating without centralized observability struggle with silent failures, resource bottlenecks, and slow manual diagnosis. This project solved the issue by establishing automated metric collection, real-time dashboards, and alerting coupled with verified Kubernetes self-healing during pod failures.",
     steps: [
       "Minikube Cluster",
       "NGINX Deploy",
@@ -132,21 +180,35 @@ export const SYSTEMS: SystemProject[] = [
       "Alertmanager",
       "Self-Healing Test",
     ],
-    stack: ["Kubernetes", "Minikube", "Docker", "Helm", "Prometheus", "Grafana", "Alertmanager"],
+    stack: [
+      "Docker",
+      "Kubernetes",
+      "Minikube",
+      "Helm",
+      "Prometheus",
+      "Grafana",
+      "Alertmanager",
+    ],
     bullets: [
-      "Managed local Kubernetes cluster and deployed demo application with Deployments and Services.",
-      "Configured multi-replica application, Ingress routing, ConfigMaps, and Secrets.",
+      "Managed local Kubernetes cluster with Minikube and deployed containerized services with multi-replica deployments.",
       "Packaged and deployed applications using custom Helm charts with upgrade and rollback support.",
-      "Installed kube-prometheus-stack and configured custom Grafana observability dashboards.",
-      "Tested cluster self-healing and verified automated Prometheus alerts upon pod restarts.",
+      "Deployed kube-prometheus-stack for automated cluster and container time-series metrics collection.",
+      "Built custom Grafana observability dashboards tracking CPU, memory utilization, and container health.",
+      "Configured Alertmanager rules for pod restarts and verified Kubernetes self-healing through simulated pod failures.",
     ],
     result:
-      "Result: Resilient container orchestration with proactive observability, self-healing verification and automated alerting.",
-    cluster: "containers",
+      "Result: Resilient container orchestration with proactive observability, real-time telemetry, and automated pod recovery verification.",
+    github: "https://github.com/Abhiraj2508/Kubernetes-Monitoring-Platform",
+    screenshot: "/kubernetes-monitoring.png",
+    cluster: "monitor",
   },
   {
-    id: "SYS-03",
+    id: "SYS-02",
     name: "Automated CI/CD Pipeline for React Application",
+    overview:
+      "Designed and implemented an automated continuous integration and continuous deployment (CI/CD) pipeline for a React application using Jenkins, GitHub Webhooks, Docker, and Docker Hub. Configured automated checkout, Docker image building, publishing, container deployment, and smoke testing.",
+    problemSolved:
+      "Manual builds, manual container tagging, and unverified deployments lead to environment discrepancies and deployment delays. This pipeline delivers a fully automated zero-touch workflow from code push to validated running container.",
     steps: [
       "GitHub Push",
       "GitHub Webhook",
@@ -157,29 +219,70 @@ export const SYSTEMS: SystemProject[] = [
       "Container Deploy :8086",
       "Smoke Testing",
     ],
-    stack: ["React", "Vite", "Jenkins", "Docker", "Docker Hub", "Nginx", "GitHub Webhooks", "CI/CD"],
+    stack: [
+      "React",
+      "Vite",
+      "Jenkins",
+      "GitHub Webhooks",
+      "Docker",
+      "Docker Hub",
+      "Nginx",
+      "CI/CD",
+    ],
     bullets: [
-      "Automated pipeline trigger via GitHub Webhooks upon developer push events.",
-      "Automated source-code checkout and project validation inside Jenkins.",
-      "Compiled production React application assets using Vite and Node.js.",
-      "Packaged into lightweight Docker container image and published to Docker Hub registry.",
-      "Deployed updated container (foodies-react-container) on port 8086 with automated smoke testing.",
+      "Configured GitHub Webhook to automatically trigger Jenkins pipeline on every git push.",
+      "Automated source-code checkout, validation, and production build using Vite and Node.js.",
+      "Built optimized multi-stage Docker container image and published to Docker Hub registry.",
+      "Deployed container (foodies-react-container) on port 8086 with automated port binding.",
+      "Executed automated post-deployment smoke testing scripts to verify HTTP 200 health.",
     ],
     result:
-      "Result: Zero-touch continuous deployment from git commit to live containerized React application with automated validation.",
+      "Result: Zero-touch continuous deployment from git commit to live containerized React application with automated smoke testing validation.",
+    github: "https://github.com/Abhiraj2508/Foodies-React-Web-App",
+    dockerHub: "https://hub.docker.com/r/abhiraj25/foodies-react",
+    screenshot: "/react-cicd-pipeline.png",
+    cluster: "cicd",
+  },
+  {
+    id: "SYS-03",
+    name: "Automated CI/CD Pipeline",
+    overview:
+      "Implemented an automated CI/CD pipeline using GitHub, Jenkins, and Docker to streamline application delivery. Configured automated git polling/webhooks, automated build execution, Docker containerization, local container deployment, and post-deployment smoke testing.",
+    problemSolved:
+      "Inconsistent manual build procedures and lack of post-deploy smoke checks frequently cause downtime and broken environments. This project automated the software delivery steps into a repeatable pipeline with automated verification.",
+    steps: [
+      "GitHub Commit",
+      "Jenkins Trigger",
+      "Dependency Build",
+      "Docker Image Build",
+      "Container Deployment",
+      "Smoke Testing",
+      "Docker Hub Push",
+    ],
+    stack: ["Docker", "Jenkins", "GitHub", "CI/CD", "Linux", "Shell Scripting"],
+    bullets: [
+      "Automated source-code checkout triggered by GitHub commits and branch updates.",
+      "Automated application build, verification, and testing inside isolated execution runners.",
+      "Docker container image packaging, optimization, and local deployment.",
+      "Pipeline smoke testing and artifact publishing to Docker Hub.",
+    ],
+    result:
+      "Result: Repeatable, automated software delivery pipeline that eliminates manual errors and validates container health.",
+    github: "https://github.com/Vanshu006/Foodie",
+    screenshot: "/ci-cd-project.png",
     cluster: "cicd",
   },
 ];
 
 export const DEPLOY_STEPS = [
   "Git push detected",
-  "Pipeline triggered",
-  "Source checkout",
-  "Dependency installation",
+  "Pipeline triggered via webhook",
+  "Source checkout & validation",
+  "Application build & compilation",
   "Docker image building",
   "Image pushed to Docker Hub",
-  "Deployment started on Kubernetes",
-  "Deployment successful",
+  "Container deployed to target host",
+  "Automated smoke test (HTTP 200 OK)",
 ];
 
 export const NET_NODES = ["CLIENT", "DNS", "NGINX", "APPLICATION", "CONTAINER", "DATABASE"];
@@ -187,7 +290,7 @@ export const NET_NODES = ["CLIENT", "DNS", "NGINX", "APPLICATION", "CONTAINER", 
 export const NET_CONN_INFO = [
   { proto: "DNS", port: "53", request: "Resolve domain abhiraj.dev", response: "A record -> 76.76.21.21", status: "200 OK" },
   { proto: "HTTPS", port: "443", request: "GET /", response: "302 -> /app (TLS 1.3)", status: "302 Found" },
-  { proto: "HTTP", port: "8080", request: "Proxy pass -> upstream", response: "App response", status: "200 OK" },
+  { proto: "HTTP", port: "8086", request: "Proxy pass -> foodies-react", response: "App response", status: "200 OK" },
   { proto: "gRPC", port: "50051", request: "Internal cluster RPC", response: "Container response ack", status: "200 OK" },
   { proto: "TCP", port: "5432", request: "SELECT * FROM health_check", response: "Cluster healthy (1 row)", status: "200 OK" },
 ];
@@ -206,87 +309,200 @@ export const ENDPOINTS: EndpointItem[] = [
   { name: "Resume", endpoint: "resume.pdf", isResume: true },
 ];
 
+export type SkillCategory =
+  | "DevOps"
+  | "Cloud & Orchestration"
+  | "Monitoring"
+  | "Programming"
+  | "Frontend";
+
 export interface SkillItem {
   name: string;
-  category: string;
+  category: SkillCategory;
   icon: LucideIcon;
   level: string;
   roadmap: string;
   description: string;
+  cluster: "cloud" | "containers" | "cicd" | "monitor" | "network";
 }
 
+export const SKILL_CATEGORIES: (SkillCategory | "All")[] = [
+  "All",
+  "DevOps",
+  "Cloud & Orchestration",
+  "Monitoring",
+  "Programming",
+  "Frontend",
+];
+
 export const SKILLS_LIST: SkillItem[] = [
+  // DevOps
+  {
+    name: "Linux",
+    category: "DevOps",
+    icon: TerminalIcon,
+    level: "Core OS & Scripting (Hands-on Practice)",
+    roadmap: "Bash automation, permissions & process management",
+    description:
+      "Core operating system for servers and container hosts. Experienced in Bash shell scripting, Linux file permissions, user access, SSH key management, systemd service administration, and command-line system troubleshooting.",
+    cluster: "network",
+  },
+  {
+    name: "Git",
+    category: "DevOps",
+    icon: GitBranch,
+    level: "Proficient (Project Experience)",
+    roadmap: "Branching strategies, commit hygiene & conflict resolution",
+    description:
+      "Distributed version control for source code and infrastructure manifests. Proficient with feature branching, rebasing, merge conflict resolution, commit history inspection, and semantic release tagging.",
+    cluster: "cicd",
+  },
+  {
+    name: "GitHub",
+    category: "DevOps",
+    icon: GitPullRequest,
+    level: "Proficient (Project Experience)",
+    roadmap: "Pull requests, code reviews & webhook automation",
+    description:
+      "Central code hosting and collaboration platform. Configured GitHub Webhooks for automated CI/CD triggers, branch protection rules, pull request workflows, and repository access management.",
+    cluster: "cicd",
+  },
   {
     name: "Docker",
-    category: "CONTAINERIZATION",
+    category: "DevOps",
     icon: Container,
-    level: "Learning & Project Practice",
-    roadmap: "Part of my current learning roadmap",
+    level: "Proficient (Hands-on Practice)",
+    roadmap: "Multi-stage builds, container networking & registry publishing",
     description:
-      "Building reproducible container images, multi-stage Dockerfiles, volume management, container networking, and local cluster testing.",
+      "Containerizing applications using optimized multi-stage Dockerfiles, managing container lifecycles, port mapping, volume persistence, Docker networks, and automated publishing to Docker Hub registries.",
+    cluster: "containers",
   },
   {
     name: "Jenkins",
-    category: "CI/CD AUTOMATION",
+    category: "DevOps",
     icon: Workflow,
-    level: "Project Practice",
-    roadmap: "Part of my current learning roadmap",
+    level: "Intermediate (Project Practice)",
+    roadmap: "Declarative pipelines & automated build triggers",
     description:
-      "Automated CI/CD pipelines, build triggers, automated testing, SonarQube code quality gates, and container deployments.",
-  },
-  {
-    name: "Kubernetes",
-    category: "ORCHESTRATION",
-    icon: Boxes,
-    level: "Learning",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Configuring multi-container Pods, Deployments, ClusterIP/NodePort Services, Ingress controllers, and Helm charts.",
-  },
-  {
-    name: "AWS",
-    category: "CLOUD PLATFORM",
-    icon: Cloud,
-    level: "Learning",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Provisioning cloud compute (EC2), storage (S3), identity management (IAM), VPC networking, and security groups.",
-  },
-  {
-    name: "Linux",
-    category: "OPERATING SYSTEM",
-    icon: TerminalIcon,
-    level: "Learning & Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Core operating system foundation, Bash shell scripting, systemd service management, SSH, and networking fundamentals.",
-  },
-  {
-    name: "Git & GitHub",
-    category: "VERSION CONTROL",
-    icon: GitBranch,
-    level: "Project Practice",
-    roadmap: "Part of my current learning roadmap",
-    description:
-      "Branch management, pull requests, semantic versioning, and GitHub webhook integrations with CI/CD runners.",
+      "Configuring declarative Jenkins pipelines, integrating GitHub Webhooks for automated execution on push events, automated dependency installation, Docker build stages, container deployment, and smoke testing.",
+    cluster: "cicd",
   },
   {
     name: "CI/CD",
-    category: "AUTOMATION",
+    category: "DevOps",
     icon: Server,
-    level: "Project Practice",
-    roadmap: "Part of my current learning roadmap",
+    level: "Intermediate (Hands-on Practice)",
+    roadmap: "Continuous delivery pipelines & automated verification",
     description:
-      "Automating source checkout, dependency installation, security scanning, container packaging, and production rollouts.",
+      "Designing automated, repeatable deployment pipelines connecting git commits directly to containerized deployments. Incorporating automated build verification, image tagging, and post-deployment smoke validation.",
+    cluster: "cicd",
+  },
+
+  // Cloud & Orchestration
+  {
+    name: "AWS Fundamentals",
+    category: "Cloud & Orchestration",
+    icon: Cloud,
+    level: "Foundational (Active Learning)",
+    roadmap: "EC2 compute, S3 storage, IAM & security groups",
+    description:
+      "Foundational knowledge of Amazon Web Services. Hands-on practice provisioning EC2 virtual servers, managing S3 buckets for object storage, configuring IAM roles and user policies, and setting up security group firewalls.",
+    cluster: "cloud",
+  },
+  {
+    name: "Kubernetes",
+    category: "Cloud & Orchestration",
+    icon: Boxes,
+    level: "Foundational (Hands-on Practice)",
+    roadmap: "Pods, Deployments, Services, Ingress & self-healing",
+    description:
+      "Container orchestration fundamentals: authoring declarative YAML manifests for Pods, multi-replica Deployments, ClusterIP and NodePort Services, Ingress routing, ConfigMaps, and observing self-healing recovery.",
+    cluster: "containers",
+  },
+  {
+    name: "Minikube",
+    category: "Cloud & Orchestration",
+    icon: Layers,
+    level: "Intermediate (Project Practice)",
+    roadmap: "Local cluster management, addons & verification",
+    description:
+      "Setting up and managing local Kubernetes development clusters. Enabling ingress and metrics addons, testing pod scaling and network policies, and validating container failure scenarios locally.",
+    cluster: "containers",
+  },
+
+  // Monitoring
+  {
+    name: "Prometheus",
+    category: "Monitoring",
+    icon: Flame,
+    level: "Intermediate (Project Practice)",
+    roadmap: "Time-series metrics, scraping & PromQL queries",
+    description:
+      "Deploying the kube-prometheus-stack operator, configuring scrape targets and ServiceMonitors, inspecting metrics endpoints, and authoring PromQL queries to track cluster CPU, memory, and container status.",
+    cluster: "monitor",
+  },
+  {
+    name: "Grafana",
+    category: "Monitoring",
+    icon: LineChart,
+    level: "Intermediate (Project Practice)",
+    roadmap: "Dashboard visualization & telemetry panels",
+    description:
+      "Connecting Prometheus data sources, creating and configuring observability dashboards, visualizing resource usage trends over time, and monitoring cluster health in real time.",
+    cluster: "monitor",
+  },
+
+  // Programming
+  {
+    name: "Java",
+    category: "Programming",
+    icon: Coffee,
+    level: "Proficient (Academic & Project)",
+    roadmap: "Object-oriented design, collections & algorithms",
+    description:
+      "Strong foundation in Java developed through B.Tech Computer Science coursework. Proficient in Object-Oriented Programming (OOP) concepts, Java Collections Framework, exception handling, and algorithmic problem-solving.",
+    cluster: "cicd",
   },
   {
     name: "JavaScript",
-    category: "PROGRAMMING",
+    category: "Programming",
     icon: Code2,
-    level: "Learning & Practice",
-    roadmap: "Part of my current learning roadmap",
+    level: "Proficient (Hands-on Practice)",
+    roadmap: "ES6+, async/await, DOM APIs & Node.js runtime",
     description:
-      "Application logic, script automation, Node.js tooling, and interactive frontend & backend integrations.",
+      "Modern JavaScript (ES6+), asynchronous programming with async/await and promises, DOM APIs, JSON manipulation, REST API integration, and Node.js scripting for automation tooling.",
+    cluster: "cicd",
+  },
+
+  // Frontend
+  {
+    name: "React",
+    category: "Frontend",
+    icon: Atom,
+    level: "Proficient (Project Experience)",
+    roadmap: "Component architecture, hooks & responsive UI",
+    description:
+      "Building modular, responsive single-page applications using functional components, state management with hooks (useState, useEffect, useMemo), props flow, and component lifecycle optimization.",
+    cluster: "cicd",
+  },
+  {
+    name: "HTML",
+    category: "Frontend",
+    icon: FileCode,
+    level: "Proficient (Core Foundation)",
+    roadmap: "Semantic markup, accessibility & responsive structure",
+    description:
+      "Writing clean, semantic HTML5 markup with proper document structure, accessibility attributes (ARIA), forms, and responsive viewport configurations.",
+    cluster: "cicd",
+  },
+  {
+    name: "CSS",
+    category: "Frontend",
+    icon: Palette,
+    level: "Proficient (Project Experience)",
+    roadmap: "Flexbox, CSS Grid, animations & responsive styling",
+    description:
+      "Modern web styling using CSS3 Flexbox, CSS Grid, custom properties (CSS variables), media queries for mobile/tablet/desktop layouts, and smooth transition animations.",
+    cluster: "cicd",
   },
 ];
-

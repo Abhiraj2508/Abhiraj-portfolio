@@ -6,31 +6,40 @@ export default function ProfileSection() {
   return (
     <section id="profile" className="section">
       <div className="section-head">
-        <div className="eyebrow">03 · Engineer Profile</div>
+        <div className="eyebrow">03 · About Candidate</div>
         <h2 className="section-title">Read from disk: abhiraj.json</h2>
+        <p className="section-sub">
+          Fresher with practical hands-on project experience in DevOps workflows and modern web development.
+        </p>
       </div>
       <div className="profile-grid">
         <div className="profile-intro">
           <p>
-            Abhiraj Pratap Singh is an <span className="accent">aspiring DevOps Engineer</span> focused on building automated, reliable and scalable deployment workflows.
+            Hello! I am <span className="accent">Abhiraj Pratap Singh</span>, an aspiring <span className="accent">DevOps Engineer &amp; Web Developer</span> with a completed <span className="accent">B.Tech in Computer Science and Engineering</span>.
           </p>
           <p>
-            With a foundation in Computer Science and Engineering, he is passionate about <span className="accent">Linux administration, containerization, CI/CD automation and cloud technologies.</span>
+            As an entry-level candidate, I focus on practical implementation. I have built hands-on projects automating software delivery with <span className="accent">Docker, Jenkins, Linux administration, and Git version control</span>, including automated build testing, container packaging, and Docker Hub releases.
           </p>
           <p>
-            His hands-on project experience includes building a <span className="accent">Docker and Jenkins-based CI/CD pipeline, automating application builds, container deployment, smoke testing and Docker Hub image publishing.</span>
+            I have practical hands-on experience exploring <span className="accent">Kubernetes fundamentals &amp; Minikube</span> and cluster monitoring with <span className="accent">Prometheus &amp; Grafana</span> to observe application health and container self-healing.
           </p>
           <p>
-            Currently strengthening his knowledge of Kubernetes, AWS, infrastructure automation and monitoring to build production-ready DevOps solutions.
+            On the development side, I build responsive, component-driven web interfaces using <span className="accent">JavaScript, React, HTML, and CSS</span>, backed by academic and project foundations in <span className="accent">Java</span> programming and <span className="accent">SQL</span> database querying.
+          </p>
+          <p>
+            I am actively looking for <span className="accent">entry-level DevOps Engineer, Junior Cloud Engineer, or Full-Stack Web Developer</span> opportunities and internships where I can contribute to automated workflows and learn from experienced teams.
           </p>
           <div className="focus-tags">
-            <span>CLOUD & DEVOPS</span>
-            <span>CI/CD AUTOMATION</span>
-            <span>DOCKER CONTAINERIZATION</span>
-            <span>JENKINS PIPELINES</span>
-            <span>LINUX ADMINISTRATION</span>
-            <span>GIT & GITHUB</span>
-            <span>KUBERNETES</span>
+            <span>B.TECH CSE (COMPLETED)</span>
+            <span>DOCKER</span>
+            <span>JENKINS CI/CD</span>
+            <span>LINUX</span>
+            <span>GIT &amp; GITHUB</span>
+            <span>KUBERNETES FUNDAMENTALS</span>
+            <span>JAVASCRIPT</span>
+            <span>REACT</span>
+            <span>SQL</span>
+            <span>JAVA</span>
             <span>AWS FUNDAMENTALS</span>
           </div>
         </div>
@@ -40,26 +49,29 @@ export default function ProfileSection() {
             <span className="v">Abhiraj Pratap Singh</span>
           </div>
           <div className="data-row">
-            <span className="k">role</span>
-            <span className="v">Aspiring DevOps Engineer</span>
-          </div>
-
-          <div className="data-row">
-            <span className="k">focus</span>
-            <span className="v">DevOps · Cloud · Automation · CI/CD</span>
+            <span className="k">education</span>
+            <span className="v">B.Tech CSE (Completed)</span>
           </div>
           <div className="data-row">
-            <span className="k">primary_stack</span>
-            <span className="v">Docker, Jenkins, Kubernetes, AWS, Linux, Git</span>
+            <span className="k">experience_level</span>
+            <span className="v">Fresher · Hands-on Projects</span>
           </div>
           <div className="data-row">
-            <span className="k">version_control</span>
-            <span className="v">Git, GitHub</span>
+            <span className="k">target_roles</span>
+            <span className="v">DevOps Engineer · Web Developer</span>
           </div>
           <div className="data-row">
-            <span className="k">status</span>
+            <span className="k">devops_tools</span>
+            <span className="v">Docker, Jenkins, Linux, Git, Kubernetes</span>
+          </div>
+          <div className="data-row">
+            <span className="k">dev_stack</span>
+            <span className="v">JavaScript, React, Java, SQL, HTML/CSS</span>
+          </div>
+          <div className="data-row">
+            <span className="k">availability</span>
             <span className="v" style={{ color: "var(--green)" }}>
-              ● Open to Opportunities
+              ● Open for Entry-Level &amp; Internships
             </span>
           </div>
         </div>

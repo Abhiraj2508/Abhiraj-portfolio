@@ -523,9 +523,9 @@ export default function Home() {
       case "whoami":
         newLines.push({
           text: `Abhiraj Pratap Singh
-Role: Aspiring DevOps Engineer
-Focus: Cloud Infrastructure · CI/CD Automation · Containers · Linux · Observability
-Status: Open to DevOps Engineer & Cloud opportunities`,
+Role: Aspiring DevOps Engineer | Web Developer
+Focus: Cloud Infrastructure · CI/CD Automation · Containerization · Linux · Monitoring
+Status: Open to Entry-Level DevOps & Web Development Opportunities`,
         });
         break;
 
@@ -537,14 +537,11 @@ Status: Open to DevOps Engineer & Cloud opportunities`,
 abhiraj@devops
 --------------
 OS:        ABHIRAJ.OS (DevOps Edition)
-Engineer:  Abhiraj Pratap Singh
-Shell:     bash 5.2
-Cloud:     AWS (EC2, S3, IAM, VPC, EKS)
-Runtime:   Docker, Kubernetes
-CI/CD:     Jenkins, GitHub Actions
-IaC:       Terraform
-Observ:    Prometheus, Grafana
-Status:    ● Available for opportunities`,
+Candidate: Abhiraj Pratap Singh
+Degree:    B.Tech in Computer Science and Engineering (Completed)
+Focus:     DevOps & Web Development (Fresher with hands-on project experience)
+Skills:    Docker, Jenkins, Linux, Git, Kubernetes, Prometheus, Grafana, React, Java
+Status:    ● Open to Work (Entry-level roles & internships)`,
           cls: "t-ok",
         });
         break;
@@ -566,12 +563,12 @@ Status:    ● Available for opportunities`,
       case "ls":
         if (termCwd === "~") {
           newLines.push({
-            text: "about/   projects/   skills/   experience/   education/   certifications/   contact/   resume.pdf",
+            text: "about/   projects/   skills/   education/   contact/   resume.pdf",
             cls: "t-dir",
           });
         } else if (termCwd === "~/projects") {
           newLines.push({
-            text: "automated-cicd/   aws-infrastructure/   kubernetes-deployment/",
+            text: "kubernetes-monitoring-platform/   foodies-react-cicd/   automated-cicd/",
             cls: "t-dir",
           });
         } else {
@@ -586,7 +583,7 @@ Status:    ● Available for opportunities`,
           setTermCwd("~");
         } else if (argStr === "projects" || argStr === "~/projects") {
           setTermCwd("~/projects");
-        } else if (["about", "skills", "experience", "education", "contact"].includes(argStr)) {
+        } else if (["about", "skills", "education", "contact"].includes(argStr)) {
           setTermCwd(`~/${argStr}`);
         } else {
           newLines.push({ text: `cd: ${argStr}: No such directory`, cls: "t-err" });
@@ -599,8 +596,9 @@ Status:    ● Available for opportunities`,
           setActiveModal("resume");
         } else if (argStr === "details.txt" || argStr === "profile.txt") {
           newLines.push({
-            text: `Abhiraj Pratap Singh — DevOps Engineer
-Focused on automated, scalable and observable infrastructure across AWS, Docker, Kubernetes and Jenkins.`,
+            text: `Abhiraj Pratap Singh — Aspiring DevOps Engineer | Web Developer
+B.Tech in Computer Science and Engineering (Completed).
+Focused on automated CI/CD pipelines, containerized applications and reliable deployment workflows.`,
           });
         } else {
           newLines.push({ text: `cat: ${argStr || ""}: No such file. Try: cat resume.pdf`, cls: "t-err" });
@@ -613,17 +611,16 @@ Focused on automated, scalable and observable infrastructure across AWS, Docker,
             text: `DEVOPS(1)                    Abhiraj's Manual                    DEVOPS(1)
 
 NAME
-    devops — automate, ship, observe
+    devops — automate, containerize, monitor, deliver
 
 PRACTICES
-    Linux         core OS, shell automation, performance tuning
-    Networking    TCP/IP, DNS, HTTP/HTTPS, SSL/TLS, reverse proxies
-    AWS           EC2, S3, IAM, VPC, RDS, EKS
-    Docker        container packaging, lightweight images
-    Kubernetes    declarative deployments, services, ingress, self-healing
-    CI/CD         Jenkins automated pipelines, security gates
-    Terraform     reusable infrastructure as code
-    Monitoring    Prometheus metrics, Grafana visual dashboards
+    Linux         Core OS, shell scripting, permissions, system administration
+    Git & GitHub  Distributed version control, branching, webhook triggers
+    Docker        Container packaging, multi-stage builds, Docker Hub registry
+    Kubernetes    Minikube local cluster, Deployments, Services, Helm charts
+    CI/CD         Jenkins automated pipelines, smoke testing, continuous delivery
+    Monitoring    Prometheus metrics, Grafana dashboards, Alertmanager
+    Programming   Java, JavaScript, React, Vite, HTML, CSS
 
 Explore any of these sections directly on this page.`,
           });
@@ -636,10 +633,10 @@ Explore any of these sections directly on this page.`,
         sceneControllerRef.current?.focusCluster("cicd");
         if (argStr === "log") {
           newLines.push({
-            text: `commit 3f8a12e — Enterprise CI/CD Pipeline with Integrated Security (DevSecOps)
-commit 8b2c45d — AWS Infrastructure Automation with Terraform
-commit 9a4e76c — Kubernetes Application Deployment & Grafana Observability
-● 3 infrastructure repositories active`,
+            text: `commit 3f8a12e — Automated Kubernetes Deployment & Monitoring Platform
+commit 8b2c45d — Automated CI/CD Pipeline for React Application
+commit 9a4e76c — Automated CI/CD Pipeline (Foodie Application)
+● 3 projects verified & implemented`,
             cls: "t-ok",
           });
         } else {
@@ -651,10 +648,10 @@ commit 9a4e76c — Kubernetes Application Deployment & Grafana Observability
         sceneControllerRef.current?.focusCluster("containers");
         if (argStr === "ps") {
           newLines.push({
-            text: `CONTAINER ID   IMAGE                 STATUS         PORTS
-c1a2b3         payments-api:latest   Up 3 hours     8080/tcp
-d4e5f6         nginx:alpine          Up 3 hours     80/tcp, 443/tcp
-2 containers running & healthy`,
+            text: `CONTAINER ID   IMAGE                            STATUS         PORTS
+a1b2c3d4       abhiraj25/foodies-react:latest   Up 2 hours     0.0.0.0:8086->80/tcp
+e5f6a7b8       kubernetes-monitoring:latest     Up 4 hours     9090/tcp, 3000/tcp
+2 container workloads running & healthy`,
             cls: "t-ok",
           });
         } else {
@@ -666,10 +663,10 @@ d4e5f6         nginx:alpine          Up 3 hours     80/tcp, 443/tcp
         sceneControllerRef.current?.focusCluster("containers");
         if (argStr === "get pods") {
           newLines.push({
-            text: `NAME                  READY   STATUS    RESTARTS   AGE
-payments-api-7d9f     1/1     Running   0          14d
-grafana-6f8c          1/1     Running   0          14d
-prometheus-9a1d       1/1     Running   0          14d`,
+            text: `NAME                                READY   STATUS    RESTARTS   AGE
+foodies-app-deployment-7d9f         1/1     Running   0          2d
+prometheus-k8s-0                    1/1     Running   0          2d
+grafana-core-6f8c                   1/1     Running   0          2d`,
             cls: "t-ok",
           });
         } else {

@@ -19,37 +19,48 @@ export default function ContactSection({ setActiveModal }: ContactSectionProps) 
             <span className="contact-title-accent">something reliable.</span>
           </h2>
           <p className="contact-main-desc">
-            I&apos;m open to entry-level opportunities, internships and learning-focused teams in DevOps and cloud engineering.
+            Open to entry-level <strong>DevOps Engineer</strong> and <strong>Web Developer</strong> opportunities,
+            graduate engineering roles, and internships. Ready to contribute hands-on skills in CI/CD automation,
+            containerization, and modern web applications.
           </p>
-          <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=abhirajpratap250802@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-cta-btn"
-          >
-            <span>Start a conversation</span>
-            <ArrowUpRight size={18} />
-          </a>
+          <div className="contact-left-actions">
+            <a
+              href="mailto:abhirajpratap250802@gmail.com"
+              className="contact-cta-btn"
+              aria-label="Send an email to Abhiraj Pratap Singh"
+            >
+              <span>Email Directly</span>
+              <ArrowUpRight size={18} />
+            </a>
+            <a
+              href="/resume.pdf"
+              download="Abhiraj_Pratap_Singh_Resume.pdf"
+              className="btn resume-direct-btn"
+              aria-label="Download Abhiraj Pratap Singh's Resume PDF"
+            >
+              <Download size={16} />
+              <span>[ Download Resume ]</span>
+            </a>
+          </div>
         </div>
 
         {/* RIGHT COLUMN: 4 INTERACTIVE CONTACT CARDS */}
         <div className="contact-cards-stack">
           {/* EMAIL */}
           <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=abhirajpratap250802@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:abhirajpratap250802@gmail.com"
             className="contact-card-item"
             data-node-label="Email"
+            aria-label="Email abhirajpratap250802@gmail.com"
           >
             <div className="contact-card-icon">
-              <Mail size={22} />
+              <Mail size={22} aria-hidden="true" />
             </div>
             <div className="contact-card-info">
-              <span className="contact-card-label">EMAIL</span>
+              <span className="contact-card-label">EMAIL ADDRESS</span>
               <span className="contact-card-value">abhirajpratap250802@gmail.com</span>
             </div>
-            <ArrowUpRight size={18} className="contact-card-arrow" />
+            <ArrowUpRight size={18} className="contact-card-arrow" aria-hidden="true" />
           </a>
 
           {/* GITHUB */}
@@ -59,15 +70,16 @@ export default function ContactSection({ setActiveModal }: ContactSectionProps) 
             rel="noopener noreferrer"
             className="contact-card-item"
             data-node-label="GitHub"
+            aria-label="Visit GitHub profile of Abhiraj Pratap Singh"
           >
             <div className="contact-card-icon">
-              <GitBranch size={22} />
+              <GitBranch size={22} aria-hidden="true" />
             </div>
             <div className="contact-card-info">
-              <span className="contact-card-label">GITHUB</span>
+              <span className="contact-card-label">GITHUB PROFILE</span>
               <span className="contact-card-value">github.com/Abhiraj2508</span>
             </div>
-            <ArrowUpRight size={18} className="contact-card-arrow" />
+            <ArrowUpRight size={18} className="contact-card-arrow" aria-hidden="true" />
           </a>
 
           {/* LINKEDIN */}
@@ -77,35 +89,40 @@ export default function ContactSection({ setActiveModal }: ContactSectionProps) 
             rel="noopener noreferrer"
             className="contact-card-item"
             data-node-label="LinkedIn"
+            aria-label="Connect on LinkedIn with Abhiraj Pratap Singh"
           >
             <div className="contact-card-icon">
-              <ExternalLink size={22} />
+              <ExternalLink size={22} aria-hidden="true" />
             </div>
             <div className="contact-card-info">
-              <span className="contact-card-label">LINKEDIN</span>
-              <span className="contact-card-value">Connect professionally</span>
+              <span className="contact-card-label">LINKEDIN NETWORK</span>
+              <span className="contact-card-value">linkedin.com/in/abhiraj2508/</span>
             </div>
-            <ArrowUpRight size={18} className="contact-card-arrow" />
+            <ArrowUpRight size={18} className="contact-card-arrow" aria-hidden="true" />
           </a>
 
           {/* RESUME */}
-          <div
+          <a
+            href="/resume.pdf"
+            download="Abhiraj_Pratap_Singh_Resume.pdf"
             className="contact-card-item"
-            onClick={() => setActiveModal("resume")}
             data-node-label="Resume"
+            aria-label="Download Resume PDF"
+            onClick={(e) => {
+              // Also open modal on desktop preview if desired, or let download proceed
+            }}
           >
             <div className="contact-card-icon">
-              <Download size={22} />
+              <Download size={22} aria-hidden="true" />
             </div>
             <div className="contact-card-info">
-              <span className="contact-card-label">RESUME</span>
-              <span className="contact-card-value">Download PDF</span>
+              <span className="contact-card-label">CURRICULUM VITAE</span>
+              <span className="contact-card-value">Download Resume (PDF)</span>
             </div>
-            <ArrowUpRight size={18} className="contact-card-arrow" />
-          </div>
+            <ArrowUpRight size={18} className="contact-card-arrow" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </section>
   );
 }
-
