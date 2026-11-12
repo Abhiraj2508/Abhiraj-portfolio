@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import GitHubReposSection from "@/components/GitHubReposSection";
 import {
   Activity,
   Bell,
@@ -351,9 +350,6 @@ export default function FeaturedProjectsSection({
           </div>
         </div>
       </div>
-
-      {/* Dynamic GitHub Repositories (Auto-Synced via GitHub REST API) */}
-      <GitHubReposSection />
     </section>
   );
 }
