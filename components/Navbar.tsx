@@ -19,14 +19,24 @@ export default function Navbar({
     <>
       {/* TOP NAVIGATION */}
       <nav id="nav">
-        <div className="logo">
+        <a
+          href="#hero"
+          className="logo"
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileMenuOpen(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            window.history.pushState(null, "", "#hero");
+          }}
+          aria-label="Back to top / System"
+        >
           <img
             src="/avatar.jpg"
             alt="Abhiraj Pratap Singh"
             className="logo-avatar"
           />
           <span className="dot" /> ABHIRAJ.OS
-        </div>
+        </a>
         <button id="nav-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           MENU
         </button>
