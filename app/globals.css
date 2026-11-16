@@ -1849,6 +1849,10 @@ h1, h2, h3 {
   align-items: center;
   gap: 8px;
   padding: 0 20px 18px;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 #term-prompt-lbl {
   color: var(--term-prompt);
@@ -1857,12 +1861,31 @@ h1, h2, h3 {
 }
 #term-input {
   flex: 1;
-  background: none;
-  border: none;
-  outline: none;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
   color: var(--term-text);
   font-family: var(--font-mono);
   font-size: 13px;
+  caret-color: var(--term-prompt);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}
+#term-input:focus,
+#term-input:focus-visible,
+#term-input:active,
+#term-input:hover {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
 }
 .term-hint {
   padding: 0 20px 16px;
@@ -2132,7 +2155,7 @@ h1, h2, h3 {
 /* Global focus visible states for accessibility */
 button:focus-visible,
 a:focus-visible,
-input:focus-visible,
+input:not(#term-input):focus-visible,
 div[tabindex="0"]:focus-visible {
   outline: 2px solid var(--purple-light) !important;
   outline-offset: 3px !important;
